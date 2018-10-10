@@ -13,7 +13,7 @@ Blockade.js is a library that provides easy in-memory storage that's blockchain-
    - `difficulty` is the mining difficulty
 
 `Chain.submit(obj)`
- - Records the given object onto the blockchain
+ - Records the given object onto the blockchain. If a previous submission has the same key, this would be considered a new 'version' of the same object.
  
 `Chain.delete(val)`
  - Deletes the given object, which is determined by `val` and `defaultKey`
