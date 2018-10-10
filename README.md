@@ -3,7 +3,7 @@
 
 *Contributions welcome!*
 
-Blockade.js is a library that provides an easy private blockchain storage solution.
+Blockade.js is a library that provides easy in-memory storage that's blockchain-powered, which provides an immutable history.
 
 # API
 
