@@ -3,15 +3,17 @@
 const sha256 = require('crypto-js/sha256');
 
 module.exports = class Block {
-	constructor(index = 0, previousHash = null, data = 'genesis', difficulty = 0) {
+	constructor(index = 0, previousHash = null, data = 'genesis', difficulty = 0, isDeletion = false) {
 		this.timestamp = new Date();
 		this.data = data;
 		this.index = index;
+		this.isDeletion = isDeletion;
 		this.previousHash = previousHash;
 
 		this.difficulty = difficulty;
 		this.nonce = 0;
 		this.mine();
+		Object.freeze(this);
 	}
 
 	mine() {
@@ -25,7 +27,7 @@ module.exports = class Block {
 
 	genHash() {
 		return sha256(
-			this.index + this.previousHash + this.timestamp + JSON.stringify(this.data) + this.nonce
+			this.index + this.previousHash + this.timestamp + this.isDeletion + JSON.stringify(this.data) + this.nonce
 		).toString();
 	}
 };
