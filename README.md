@@ -9,7 +9,7 @@ Blockade.js is a library that provides an easy private blockchain storage soluti
 
 `new Chain(defaultKey, difficulty)`
  - Creates a new chain.
-   - `defaultKey` is the property name by which to defaultly group data. Any function that accepts a `key` argument can have it omitted and Blockade will use the `defaultKey` instead.
+   - `defaultKey` is the property name by which to defaultly group data. Any function that accepts a `key` argument can have it omitted and Blockade.js will use the `defaultKey` instead.
    - `difficulty` is the mining difficulty
 
 `Chain.submit(obj)`
@@ -37,3 +37,19 @@ Blockade.js is a library that provides an easy private blockchain storage soluti
  
 `Chain.block(hash)`
  - Returns the block with the given unique hash.
+ 
+`Chain.isValid()`
+ - Returns `false` if the blockchain is found to be invalid (by modification of the block data), returns `true` otherwise.
+   - By default, Blockade.js runs this before any operation and will throw a `'Data is invalid'` error if `false` is returned.
+
+# Example
+
+```js
+let data = new Chain('name');
+
+data.submit( { name: 'John Doe', money: 1 } );
+data.submit( { name: 'John Doe', money: 200 } );
+data.get('John Doe'); //returns { name: 'John Doe', money: 200 }
+data.delete('John Doe');
+data.get('John Doe'); //returns undefined
+```
