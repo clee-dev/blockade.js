@@ -1,4 +1,4 @@
-# blockade.js
+# Blockade.js
 ![logo](https://raw.githubusercontent.com/clee-dev/blockade.js/master/images/BLOCKADE.png)
 
 *Contributions welcome!*
