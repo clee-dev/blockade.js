@@ -39,3 +39,4 @@ console.log(chain.get());
 console.log(chain.getByKey());
 
 console.log(chain.history('John Doe'));
+console.log(chain.historyByKey());

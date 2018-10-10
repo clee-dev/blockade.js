@@ -35,7 +35,7 @@ module.exports = class Chain {
 	get(keyVal, keyProp = this.key) {
 		this.safeCheck();
 
-		let block = this.blocks.findLast(x => typeof x.data[keyProp] != 'undefined' && x.data[keyProp] == keyVal);
+		let block = findLast(this.blocks, x => x.data[keyProp] && x.data[keyProp] === keyVal);
 		if (block && !block.isDeletion) return deepClone(block.data);
 		else return undefined;
 	}
@@ -47,18 +47,14 @@ module.exports = class Chain {
 
 		let arr = [];
 		let foundValues = [];
+		let filteredBlocks = this.blocks.filter(x => x.data[keyProp]);
 
-		for (var i = this.blocks.length - 1; i >= 0; i--) {
-			var block = this.blocks[i];
-			if (typeof block.data[keyProp] != 'undefined') {
-				//if property exists on this block's data
-
-				if (foundValues.indexOf(block.data[keyProp]) == -1) {
-					//if we haven't already found this property=value, mark that we've found it
-					foundValues.push(block.data[keyProp]);
-
-					if (!block.isDeletion) arr.push(block.data); //if the data wasn't deleted, add it to our return list
-				}
+		for (var i = filteredBlocks.length - 1; i >= 0; i--) {
+			var block = filteredBlocks[i];
+			if (foundValues.indexOf(block.data[keyProp]) == -1) {
+				//if we haven't already found this property=value, mark that we've found it
+				foundValues.push(block.data[keyProp]);
+				if (!block.isDeletion) arr.push(block.data); //if the data wasn't deleted, add it to our return list
 			}
 		}
 
@@ -68,27 +64,40 @@ module.exports = class Chain {
 	history(keyVal, keyProp = this.key) {
 		this.safeCheck();
 
-		let data = this.blocks.filter(x => typeof x.data[keyProp] != 'undefined' && x.data[keyProp] == keyVal);
+		let matchingBlocks = this.blocks.filter(x => x.data[keyProp] && x.data[keyProp] === keyVal);
 		let arr = [];
-		data.forEach(x => {
-			let obj = x.data;
+		matchingBlocks.forEach(x => {
+			let obj = deepClone(x.data);
 			delete obj[keyProp];
 			obj.isDeletion = x.isDeletion;
 			obj.timestamp = x.timestamp;
 			arr.push(obj);
 		});
 
-		return deepClone(arr);
+		return arr;
 	}
 
 	historyByKey(keyProp = this.key) {
 		this.safeCheck();
+
+		let history = {};
+
+		this.blocks.filter(x => x.data[keyProp]).forEach(x => {
+			if (!history[x.data[keyProp]]) history[x.data[keyProp]] = [];
+
+			let obj = deepClone(x.data);
+			delete obj[keyProp];
+			obj.isDeletion = x.isDeletion;
+			obj.timestamp = x.time;
+			history[x.data[keyProp]].push(obj);
+		});
+		return history;
 	}
 
 	block(hash) {
 		this.safeCheck();
 
-		return deepClone(this.blocks.findLast(x => x.hash === hash));
+		return deepClone(findLast(this.blocks, x => x.hash === hash));
 	}
 
 	//delete data via adding a new block with isDeletion mark
@@ -122,19 +131,15 @@ module.exports = class Chain {
 };
 
 //reverse find without calling `array.reverse()`
-Object.defineProperty(Array.prototype, 'findLast', {
-	enumerable: false,
-	value: function(predicate) {
-		for (var i = this.length - 1; i >= 0; i--) {
-			var item = this[i];
+function findLast(items, predicate) {
+	for (var i = items.length - 1; i >= 0; i--) {
+		var item = items[i];
 
-			if (predicate(item)) {
-				return item;
-			}
+		if (predicate(item)) {
+			return item;
 		}
-	},
-});
-
+	}
+}
 function deepClone(obj) {
 	return JSON.parse(JSON.stringify(obj));
 }
