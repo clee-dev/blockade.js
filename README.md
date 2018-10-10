@@ -3,7 +3,9 @@
 
 *Contributions welcome!*
 
-Blockade.js is a library that provides easy in-memory storage that's blockchain-powered, which provides an immutable history.
+Blockade.js is a library that provides easy object storage that's blockchain-powered, which provides an immutable history.
+
+*The storage is private and in-memory, not distributed via public/private keys.*
 
 # API
 
