@@ -1,11 +1,11 @@
 # Blockade.js
 ![logo](https://raw.githubusercontent.com/clee-dev/blockade.js/master/images/BLOCKADE.png)
 
-*Contributions welcome!*
-
 Blockade.js is a library that provides easy object storage that's blockchain-powered, which provides an immutable history.
 
-*The storage is private and in-memory, not distributed via public/private keys.*
+*(The storage is private and in-memory, not distributed via public/private keys.)*
+
+*Contributions welcome!*
 
 # API
 
