@@ -53,5 +53,5 @@ data.submit( { name: 'John Doe', money: 1 } );
 data.submit( { name: 'John Doe', money: 200 } );
 data.get('John Doe'); //returns { name: 'John Doe', money: 200 }
 data.delete('John Doe');
-data.get('John Doe'); //returns undefined
+data.get('John Doe'); //returns undefined, but the history of the data is still intact
 ```
